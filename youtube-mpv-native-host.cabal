@@ -1,0 +1,26 @@
+cabal-version:      3.4
+name:               youtube-mpv-native-host
+version:            0.1.0.0
+-- synopsis:
+-- description:
+license:            MIT
+license-file:       LICENSE
+author:             fanshi1028
+maintainer:         jackychany321@gmail.com
+-- copyright:
+category:           Web
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+-- extra-source-files:
+
+common warnings
+    ghc-options: -Wall
+
+executable youtube-mpv-native-host
+    import:           warnings
+    main-is:          Main.hs
+    -- other-modules:
+    -- other-extensions:
+    build-depends:    base ^>=4.18.1.0
+    hs-source-dirs:   natvie-host
+    default-language: GHC2021
