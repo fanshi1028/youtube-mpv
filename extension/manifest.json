@@ -3,14 +3,14 @@
   "name": "Youtube MPV",
   "version": "1.0",
   "description": "play youtube with mpv",
-  "permissions": [],
+  "permissions": ["nativeMessaging"],
   "content_scripts": [
     {
-     "matches": ["https://*.youtube.com/*"],
-     "css": ["styles.css"],
-     "js": ["content-script.js"],
-     "runAt": "document_end"
-   }
+      "matches": ["https://*.youtube.com/*"],
+      "css": ["styles.css"],
+      "js": ["content-script.js"],
+      "runAt": "document_end"
+    }
   ],
   "background": {
     "service_worker": "service_worker.js"

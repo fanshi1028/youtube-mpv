@@ -1,4 +1,4 @@
 /.envrc
 /.direnv/
-/dist/*.js
+/extension/*.js
 /node_modules/
