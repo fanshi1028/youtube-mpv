@@ -1,0 +1,4 @@
+/.envrc
+/.direnv/
+/dist/*.js
+/node_modules/
