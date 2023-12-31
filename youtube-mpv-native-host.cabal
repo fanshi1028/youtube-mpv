@@ -21,6 +21,12 @@ executable youtube-mpv-native-host
     main-is:          Main.hs
     -- other-modules:
     -- other-extensions:
-    build-depends:    base ^>=4.18.1.0
+    build-depends:    base ^>=4.18.1.0,
+                      binary,
+                      bytestring,
+                      text,
+                      process,
+                      aeson
     hs-source-dirs:   natvie-host
     default-language: GHC2021
+    ghc-options: -threaded

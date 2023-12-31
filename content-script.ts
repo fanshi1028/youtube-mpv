@@ -22,14 +22,14 @@ const observer = new MutationObserver((mutationList, _observer) => {
                 const v = match && match[1].split("&")[0];
                 const img = a_thumbnail?.querySelector("img");
 
-                if (img) {
-                  img.addEventListener("click", () =>
+                if (img && v) {
+                  img.addEventListener("click", () => {
                     chrome.runtime
                       .sendMessage({ v })
-                      .then((res) => console.log(res)),
-                  );
+                      .then((res) => console.log(res));
+                  });
                   dismissible.replaceChild(img, thumbnail);
-                } else console.log("fuck");
+                } else console.log(`fuck, img: ${img}, v: ${v}`);
               },
               { once: true },
             );
