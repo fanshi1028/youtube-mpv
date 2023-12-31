@@ -1,4 +1,4 @@
-#+PROPERTY: header-args: :exports both
+#+PROPERTY: header-args :exports both
 #+title: Youtube mpv browser extension
 
 A browser extension to play youtube video from [[https://mpv.io/][mpv]] (with the help of [[https://github.com/yt-dlp/yt-dlp][yt-dlp)]] via [[https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging#native-messaging-host-protocol][native messaging protocol]].
