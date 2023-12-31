@@ -26,6 +26,9 @@ executable youtube-mpv-native-host
                       bytestring,
                       text,
                       process,
+                      directory,
+                      filepath,
+                      file-io,
                       aeson
     hs-source-dirs:   natvie-host
     default-language: GHC2021

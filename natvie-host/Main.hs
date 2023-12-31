@@ -16,8 +16,12 @@ import Data.ByteString.Lazy qualified as BL (getContents, length)
 import Data.Functor ((<&>))
 import Data.Text (Text)
 import Data.Text qualified as T (pack, unpack)
+import System.Directory.OsPath (getHomeDirectory)
 import System.Exit (ExitCode (ExitSuccess))
-import System.IO (BufferMode (BlockBuffering), IOMode (WriteMode), hGetContents, hPutStrLn, hSetBinaryMode, hSetBuffering, hWaitForInput, stdin, stdout, withFile)
+import System.File.OsPath (withFile)
+import System.IO (BufferMode (BlockBuffering), IOMode (WriteMode), hGetContents, hPutStrLn, hSetBinaryMode, hSetBuffering, hWaitForInput, stdin, stdout)
+import System.OsPath ((</>))
+import System.OsPath qualified as FP (encodeUtf)
 import System.Process (CreateProcess (std_err, std_in, std_out), StdStream (CreatePipe, NoStream), shell, waitForProcess, withCreateProcess)
 
 newtype NativeMessage a = NativeMessage a deriving (Show, Eq, ToJSON)
@@ -66,7 +70,8 @@ main = do
   hSetBinaryMode stdin True
   hSetBuffering stdout $ BlockBuffering Nothing
   hSetBinaryMode stdout True
-  withFile "/Users/fanshi/Personal/chrome-extensions/youtube-mpv/temp.log" WriteMode $ \logH -> do
+  logFile <- (</>) <$> getHomeDirectory <*> FP.encodeUtf "Personal/chrome-extensions/youtube-mpv/temp.log"
+  withFile logFile WriteMode $ \logH -> do
     let printError err = hPutStrLn logH $ "error: " <> err
         printInfo info = hPutStrLn logH $ "info: " <> info
         printBytes bytes = printInfo $ "Comsumed " <> show bytes <> " bytes."
