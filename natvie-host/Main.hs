@@ -70,7 +70,8 @@ main = do
   hSetBinaryMode stdin True
   hSetBuffering stdout $ BlockBuffering Nothing
   hSetBinaryMode stdout True
-  logFile <- (</>) <$> getHomeDirectory <*> FP.encodeUtf "Personal/chrome-extensions/youtube-mpv/temp.log"
+  -- NOTE: My little brain can't think of a better place and name for the log file.
+  logFile <- (</>) <$> getHomeDirectory <*> FP.encodeUtf ".youtube-mpv-log-C_>gx_Lj5Q"
   withFile logFile WriteMode $ \logH -> do
     let printError err = hPutStrLn logH $ "error: " <> err
         printInfo info = hPutStrLn logH $ "info: " <> info
