@@ -43,7 +43,7 @@ cabal --version
 cabal build -O2
 #+end_src
 **** To find the path to the compiled executable, and fyi mine is at
-#+begin_src bash
+#+begin_src bash :exports both
 cabal list-bin youtube-mpv-native-host
 #+end_src
 
