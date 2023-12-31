@@ -13,4 +13,6 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
       }
     });
   } else res("no v");
+  // NOTE: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage#sending_an_asynchronous_response_using_sendresponse
+  return true;
 });
