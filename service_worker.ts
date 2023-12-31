@@ -5,11 +5,9 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
   if (v) {
     chrome.runtime.sendNativeMessage("youtube.mpv", { v }, (r) => {
       if (chrome.runtime.lastError) {
-        console.log(`ERROR: ${chrome.runtime.lastError.message}`);
         res(`ERROR: ${chrome.runtime.lastError.message}`);
       } else {
-        console.log(`Messaging host: ${r}`);
-        res(`Messaging host: ${r}`);
+        res(`Messaging host: ${JSON.stringify(r)}`);
       }
     });
   } else res("no v");
