@@ -1,4 +1,3 @@
-#+PROPERTY: header-args :exports both
 #+title: Youtube mpv browser extension
 
 A browser extension to play youtube video from [[https://mpv.io/][mpv]] (with the help of [[https://github.com/yt-dlp/yt-dlp][yt-dlp)]] via [[https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging#native-messaging-host-protocol][native messaging protocol]].
@@ -7,7 +6,7 @@ It is still a very rough MVP. Play with it at yout own risk.
 ** The extension
 *** Install [[https://www.typescriptlang.org/download][typescript]] if you don't have it.
 To check if you have got tsc and fyi my tsc version.
-#+begin_src bash
+#+begin_src bash :exports both
 tsc -v
 #+end_src
 
@@ -15,7 +14,7 @@ tsc -v
 : Version 5.2.2
 
 *** Compile the extension, run
-#+begin_src shell
+#+begin_src bash
 tsc
 #+end_src
 Newly compiled js will be inside [[file:extension/][./extension]], now this is your extension.
@@ -28,7 +27,7 @@ Newly compiled js will be inside [[file:extension/][./extension]], now this is y
 *** Install ghc + cabal if you don't have it
 Probably use [[https://www.haskell.org/ghcup/][ghcup]] to install them.
 To check if you have got ghc/cabal and fyi my ghc/cabal version.
-#+begin_src bash
+#+begin_src bash :exports both
 ghc --version
 cabal --version
 #+end_src
