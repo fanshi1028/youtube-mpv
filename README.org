@@ -27,15 +27,17 @@ Newly compiled js will be inside [[file:extension/][./extension]], now this is y
 *** Install ghc + cabal if you don't have it
 Probably use [[https://www.haskell.org/ghcup/][ghcup]] to install them.
 To check if you have got ghc/cabal and fyi my ghc/cabal version.
-#+begin_src bash :exports both
+
+#+begin_src bash :exports both :results scalar
 ghc --version
 cabal --version
 #+end_src
 
 #+RESULTS:
-| The           | Glorious | Glasgow  |  Haskell | Compilation | System, | version |   9.6.3 |
-| cabal-install | version  | 3.10.2.1 |          |             |         |         |         |
-| compiled      | using    | version  | 3.10.2.1 | of          | the     | Cabal   | library |
+: The Glorious Glasgow Haskell Compilation System, version 9.6.3
+: cabal-install version 3.10.2.1
+: compiled using version 3.10.2.1 of the Cabal library
+
 *** Compile the native host
 #+begin_src bash
 cabal build -O2
