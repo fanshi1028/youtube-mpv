@@ -1,11 +1,10 @@
-#+title: Readme
+#+title: Youtube mpv browser extension
 
-* Youtube Mpv
 A browser extension to play youtube video from [[https://mpv.io/][mpv]] (with the help of [[https://github.com/yt-dlp/yt-dlp][yt-dlp)]] via [[https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging#native-messaging-host-protocol][native messaging protocol]].
 It is still a very rough MVP. Play with it at yout own risk.
-** Install
-*** The extension
-**** Install [[https://www.typescriptlang.org/download][typescript]] if you don't have it.
+* Install
+** The extension
+*** Install [[https://www.typescriptlang.org/download][typescript]] if you don't have it.
 To check if you have got tsc and fyi my tsc version.
 #+begin_src bash
 tsc -v
@@ -14,18 +13,18 @@ tsc -v
 #+RESULTS:
 : Version 5.2.2
 
-**** Compile the extension, run
+*** Compile the extension, run
 #+begin_src shell
 tsc
 #+end_src
 Newly compiled js will be inside [[file:extension/][./extension]], now this is your extension.
-**** To use the extension
-***** For example for chromium based browsers:
+*** To use the extension
+**** For example for chromium based browsers:
 - [[https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked][Load it unpacked]]
 - Or :: [[https://developer.chrome.com/docs/extensions/how-to/distribute/host-extensions#create][Pack it]].
 
-*** The native host application
-**** Install ghc + cabal if you don't have it
+** The native host application
+*** Install ghc + cabal if you don't have it
 Probably use [[https://www.haskell.org/ghcup/][ghcup]] to install them.
 To check if you have got ghc/cabal and fyi my ghc/cabal version.
 #+begin_src bash
@@ -37,11 +36,11 @@ cabal --version
 | The           | Glorious | Glasgow  |  Haskell | Compilation | System, | version |   9.6.3 |
 | cabal-install | version  | 3.10.2.1 |          |             |         |         |         |
 | compiled      | using    | version  | 3.10.2.1 | of          | the     | Cabal   | library |
-**** Compile the native host
+*** Compile the native host
 #+begin_src bash
 cabal build -O2
 #+end_src
-***** To find the path to the compiled executable, and fyi mine is at
+**** To find the path to the compiled executable, and fyi mine is at
 #+begin_src bash
 cabal list-bin youtube-mpv-native-host
 #+end_src
@@ -49,9 +48,9 @@ cabal list-bin youtube-mpv-native-host
 #+RESULTS:
 : /Users/fanshi/Personal/chrome-extensions/youtube-mpv/dist-newstyle/build/x86_64-osx/ghc-9.6.3/youtube-mpv-native-host-0.1.0.0/x/youtube-mpv-native-host/build/youtube-mpv-native-host/youtube-mpv-native-host
 
-*** To register a native messaging host
+** To register a native messaging host
 - https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging#native-messaging-host
-- fyi :: I make the file at ~/Library/Application Support/Google/Chrome/NativeMessagingHosts/youtube.mpv.json, [[https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging#native-messaging-host-location][but your location might be different.]]
+- fyi I make the file at ~/Library/Application Support/Google/Chrome/NativeMessagingHosts/youtube.mpv.json, [[https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging#native-messaging-host-location][but your location might be different.]]
 #+begin_src json
 {
   "name": "youtube.mpv",
@@ -59,14 +58,14 @@ cabal list-bin youtube-mpv-native-host
   "path": "${path to your compiled native host executable}",
   "type": "stdio",
   "allowed_origins": ["chrome-extension://${extension-id}/"]
-};
+}
 #+end_src
 - And if you are not using chrome, [[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Chrome_incompatibilities#native_messaging][check this]] and adapt.
-*** Hey, of course
+** Hey, of course
 You need a browser([[https://www.google.com/chrome/][Chrome]] for example) and [[https://mpv.io/][Mpv]] + [[https://github.com/yt-dlp/yt-dlp/wiki/Installation][yt-dlp]] (and [[https://mpv.io/manual/stable/#options-ytdl-path][to setup ytdl path for mpv as needed]])
-** Usage
+* Usage
 Turn on the extension and goto [[https://youtube.com][youtube]], click on any video and see it youself (via =mpv= of course).
-** Contributing
+* Contributing
 PRs accepted
-** License
+* License
 [[file:LICENSE][MIT © fanshi1028]]
