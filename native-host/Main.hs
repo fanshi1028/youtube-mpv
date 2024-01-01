@@ -4,24 +4,20 @@
 module Main where
 
 import Control.Exception (SomeException, try)
-import Data.Aeson (FromJSON (parseJSON), KeyValue ((.=)), ToJSON (toEncoding, toJSON), eitherDecode, encode, pairs, withObject, (.:))
-import Data.Binary (Binary (get, put))
-import Data.Binary qualified as B (encode)
+import Data.Aeson as JSON (FromJSON (parseJSON), KeyValue ((.=)), ToJSON (toEncoding, toJSON), eitherDecode, encode, pairs, withObject, (.:))
+import Data.Binary as B (Binary (get, put), encode)
 import Data.Binary.Get (getLazyByteString, getWord32host, runGetOrFail)
 import Data.Binary.Put (execPut, putLazyByteString, putWord32host)
-import Data.ByteString (toStrict)
-import Data.ByteString qualified as BS (putStr)
+import Data.ByteString as BS (putStr, toStrict)
 import Data.ByteString.Builder (hPutBuilder)
 import Data.ByteString.Lazy qualified as BL (getContents, length)
 import Data.Functor ((<&>))
-import Data.Text (Text)
-import Data.Text qualified as T (pack, unpack)
+import Data.Text as T (Text, pack, unpack)
 import System.Directory.OsPath (getHomeDirectory)
 import System.Exit (ExitCode (ExitSuccess))
 import System.File.OsPath (withFile)
 import System.IO (BufferMode (BlockBuffering), IOMode (WriteMode), hGetContents, hPutStrLn, hSetBinaryMode, hSetBuffering, hWaitForInput, stdin, stdout)
-import System.OsPath ((</>))
-import System.OsPath qualified as FP (encodeUtf)
+import System.OsPath as FP (encodeUtf, (</>))
 import System.Process (CreateProcess (std_err, std_in, std_out), StdStream (CreatePipe, NoStream), shell, waitForProcess, withCreateProcess)
 
 newtype NativeMessage a = NativeMessage a deriving (Show, Eq, ToJSON)
@@ -51,7 +47,7 @@ instance ToJSON MPVReply where
 
 instance (ToJSON a, FromJSON a) => Binary (NativeMessage a) where
   put (NativeMessage a) = do
-    let bs = encode a
+    let bs = JSON.encode a
     putWord32host . fromIntegral $ BL.length bs
     putLazyByteString bs
   get = do
