@@ -1,6 +1,6 @@
-// const port = chrome.runtime.connectNative("youtube-mpv");
+const port = chrome.runtime.connectNative("youtube-mpv");
 
-chrome.runtime.onMessage.addListener((req, sender, res) => {
+chrome.runtime.onMessage.addListener((req, _sender, res) => {
   const v = req.v;
   if (v) {
     chrome.runtime.sendNativeMessage("youtube.mpv", { v }, (r) => {

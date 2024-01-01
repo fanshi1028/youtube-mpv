@@ -1,4 +1,11 @@
 {
+	"name": "youtube-mpv-chrome-extension",
+	"description": "chrome extension for playing youtube with mpv (via native messaging protocol)",
+	"version": "1.0.0",
+	"author": "Francis Chan <jackychany321@gmail.com>",
+	"license": "MIT",
+	"scripts": {},
+	"dependencies": {},
 	"devDependencies": {
 		"@types/chrome": "^0.0.254"
 	}

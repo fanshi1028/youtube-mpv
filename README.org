@@ -17,9 +17,9 @@ tsc -v
 #+begin_src bash
 tsc
 #+end_src
-Newly compiled js will be inside [[file:extension/][./extension]], now this is your extension.
 *** To use the extension
 **** For example for chromium based browsers:
+Newly compiled js will be inside [[file:extension/dist/][./extension/dist]], now this is your extension.
 - [[https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked][Load it unpacked]]
 - Or :: [[https://developer.chrome.com/docs/extensions/how-to/distribute/host-extensions#create][Pack it]].
 
