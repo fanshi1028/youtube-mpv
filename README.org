@@ -62,7 +62,6 @@ cabal list-bin youtube-mpv-native-host
   "allowed_origins": ["chrome-extension://${extension-id}/"]
 }
 #+end_src
-- And if you are not using chrome, [[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Chrome_incompatibilities#native_messaging][check this]] and adapt.
 ** Hey, of course
 You need a browser([[https://www.google.com/chrome/][Chrome]] for example) and [[https://mpv.io/][Mpv]] + [[https://github.com/yt-dlp/yt-dlp/wiki/Installation][yt-dlp]] (and [[https://mpv.io/manual/stable/#options-ytdl-path][to setup ytdl path for mpv as needed]])
 * Usage
