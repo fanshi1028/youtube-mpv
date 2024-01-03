@@ -23,11 +23,11 @@ const observer = new MutationObserver((mutationList, _observer) => {
                 const img = a_thumbnail?.querySelector("img");
 
                 if (img && v) {
-                  img.addEventListener("click", () => {
-                    chrome.runtime
-                      .sendMessage({ v })
-                      .then((res) => console.log(res));
-                  });
+                  img.addEventListener("click", () =>
+                    chrome.runtime.sendMessage({ v }, (res) =>
+                      console.log(res),
+                    ),
+                  );
                   dismissible.replaceChild(img, thumbnail);
                 } else console.log(`fuck, img: ${img}, v: ${v}`);
               },
@@ -38,7 +38,6 @@ const observer = new MutationObserver((mutationList, _observer) => {
       }
     }
   }
-  // observer.disconnect()
 });
 
 observer.observe(document, { childList: true, subtree: true });

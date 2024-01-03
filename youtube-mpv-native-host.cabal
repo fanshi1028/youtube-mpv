@@ -29,7 +29,8 @@ executable youtube-mpv-native-host
                       directory,
                       filepath,
                       file-io,
-                      aeson
+                      aeson,
+                      network
     hs-source-dirs:   native-host
     default-language: GHC2021
     ghc-options: -threaded
