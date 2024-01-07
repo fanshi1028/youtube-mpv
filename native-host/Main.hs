@@ -63,6 +63,7 @@ main :: IO ()
 main = do
   hSetBuffering stdin $ BlockBuffering Nothing
   hSetBinaryMode stdin True
+  hSetBuffering stdout $ BlockBuffering Nothing
   hSetBinaryMode stdout True
   withMpvTempFile "log" $ \(_logFile, hLog) -> do
     hSetBuffering hLog LineBuffering
@@ -95,7 +96,7 @@ main = do
                    in waitForProcess h `concurrently` commandLoop
           mpvOutputPrintloop =
             SOC.getContents soc1
-              >>= traverse_ (BL.putStr . B.encode . NativeMessage) . BL.lines
+              >>= traverse_ ((*> hFlush stdout) . BL.putStr . B.encode . NativeMessage) . BL.lines
       try (fst <$> runMpvIPC `concurrently` mpvOutputPrintloop) >>= \case
         Left (err :: SomeException) -> do
           printError $ show err
