@@ -16,7 +16,7 @@ mpvPort.onMessage.addListener((r) => {
       }`,
     );
   } else {
-    console.log(`Messaging host: ${JSON.stringify(r)}`);
+    console.log(`mpv: ${JSON.stringify(r)}`);
   }
 });
 
