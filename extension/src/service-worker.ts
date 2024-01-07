@@ -1,6 +1,6 @@
 let mpvPort = chrome.runtime.connectNative("youtube.mpv");
 
-// mpvPort.postMessage({ command: ["request_log_messages"] });
+mpvPort.postMessage({ command: ["request_log_messages"] });
 
 // NOTE: Keep mpv idle intead of getting closed when q is pressed
 mpvPort.postMessage({ command: ["keybind", "q", "stop"] });
