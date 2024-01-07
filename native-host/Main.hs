@@ -3,7 +3,7 @@
 
 module Main where
 
-import Control.Concurrent.Async (concurrently)
+import Control.Concurrent.Async (race)
 import Control.Exception (SomeException, bracket, try)
 import Data.Aeson as JSON (FromJSON (parseJSON), KeyValue ((.=)), ToJSON (toEncoding, toJSON), encode, pairs)
 import Data.Aeson.Encoding (encodingToLazyByteString)
@@ -77,30 +77,30 @@ main = do
               (_, Just _, _) -> pure . Left $ MPVError "impossible: std_out handle exists for mpv"
               (_, _, Just _) -> pure . Left $ MPVError "impossible: std_err handle exists for mpv"
               (Nothing, Nothing, Nothing) ->
-                Right . fst <$> do
-                  let parseAndSendCommand l = case runGetOrFail get l of
-                        Right (uncomsumed, b, NativeMessage cmd) -> do
-                          let (cps, cmd') = case cmd of
-                                "" ->
-                                  ( hFlush hLog *> interruptProcessGroupOf h,
-                                    encodingToLazyByteString $ pairs ("command" .= ["quit" :: Text])
-                                  )
-                                _ -> (parseAndSendCommand uncomsumed, cmd)
-                          printInfo $ "Comsumed " <> show b <> " bytes."
-                          printInfo $ show cmd'
-                          sendAll soc1 cmd'
-                          sendAll soc1 "\n"
-                          cps
-                        Left _ -> pure ()
-                      commandLoop = BL.getContents >>= parseAndSendCommand
-                   in waitForProcess h `concurrently` commandLoop
+                let parseAndSendCommand l = case runGetOrFail get l of
+                      Right (uncomsumed, b, NativeMessage cmd) -> do
+                        let (cps, cmd') = case cmd of
+                              "" ->
+                                ( hFlush hLog *> interruptProcessGroupOf h,
+                                  encodingToLazyByteString $ pairs ("command" .= ["quit" :: Text])
+                                )
+                              _ -> (parseAndSendCommand uncomsumed, cmd)
+                        printInfo $ "Comsumed " <> show b <> " bytes."
+                        printInfo $ show cmd'
+                        sendAll soc1 cmd'
+                        sendAll soc1 "\n"
+                        cps
+                      Left _ -> pure ()
+                    commandLoop = BL.getContents >>= parseAndSendCommand
+                 in (MPVError "commadLoop ended before mpv" <$ commandLoop) `race` waitForProcess h
           mpvOutputPrintloop =
             SOC.getContents soc1
               >>= traverse_ ((*> hFlush stdout) . BL.putStr . B.encode . NativeMessage) . BL.lines
-      try (fst <$> runMpvIPC `concurrently` mpvOutputPrintloop) >>= \case
+      try ((MPVError "mpvOutputPrintloop ended before mpv" <$ mpvOutputPrintloop) `race` runMpvIPC) >>= \case
         Left (err :: SomeException) -> do
           printError $ show err
           hEncodeAndSend $ MPVError . T.pack $ show err
-        Right (Right ExitSuccess) -> printInfo "Done, all good"
-        Right (Right oops) -> hEncodeAndSend . MPVError . T.pack $ show oops
+        Right (Right (Right ExitSuccess)) -> printInfo "Done, all good"
+        Right (Right (Right oops)) -> hEncodeAndSend . MPVError . T.pack $ show oops
+        Right (Right (Left oops)) -> hEncodeAndSend oops
         Right (Left err) -> hEncodeAndSend err
