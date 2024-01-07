@@ -79,17 +79,11 @@ main = do
               (Nothing, Nothing, Nothing) ->
                 let parseAndSendCommand l = case runGetOrFail get l of
                       Right (uncomsumed, b, NativeMessage cmd) -> do
-                        let (cps, cmd') = case cmd of
-                              "" ->
-                                ( hFlush hLog *> interruptProcessGroupOf h,
-                                  encodingToLazyByteString $ pairs ("command" .= ["quit" :: Text])
-                                )
-                              _ -> (parseAndSendCommand uncomsumed, cmd)
                         printInfo $ "Comsumed " <> show b <> " bytes."
-                        printInfo $ show cmd'
-                        sendAll soc1 cmd'
+                        printInfo $ show cmd
+                        sendAll soc1 cmd
                         sendAll soc1 "\n"
-                        cps
+                        parseAndSendCommand uncomsumed
                       Left _ -> pure ()
                     commandLoop = BL.getContents >>= parseAndSendCommand
                  in (MPVError "commadLoop ended before mpv" <$ commandLoop) `race` waitForProcess h
