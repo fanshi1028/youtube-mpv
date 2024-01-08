@@ -26,9 +26,6 @@ executable youtube-mpv-native-host
                       bytestring,
                       text,
                       process,
-                      directory,
-                      filepath,
-                      file-io,
                       aeson,
                       network,
                       async

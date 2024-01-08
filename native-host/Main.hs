@@ -10,16 +10,14 @@ import Data.Binary as B (Binary (get, put))
 import Data.Binary.Get (getLazyByteString, getWord32host, runGetOrFail)
 import Data.Binary.Put (execPut, putLazyByteString, putWord32host)
 import Data.ByteString.Builder (hPutBuilder)
-import Data.ByteString.Lazy qualified as BL (ByteString, getContents, length)
+import Data.ByteString.Lazy as BL (ByteString, getContents, length)
 import Data.ByteString.Lazy.Char8 as BL (lines)
 import Data.Foldable (traverse_)
 import Data.Text as T (Text, pack)
 import Network.Socket (Family (AF_UNIX), SocketType (Datagram), close, defaultProtocol, socketPair, withFdSocket)
 import Network.Socket.ByteString.Lazy as SOC (getContents, sendAll)
-import System.Directory.OsPath (createDirectoryIfMissing, getHomeDirectory)
 import System.Exit (ExitCode (ExitSuccess))
-import System.IO (BufferMode (BlockBuffering), Handle, hClose, hFlush, hSetBinaryMode, hSetBuffering, openTempFile, stdin, stdout)
-import System.OsPath as FP (decodeUtf, encodeUtf, (</>))
+import System.IO (BufferMode (BlockBuffering), hFlush, hSetBinaryMode, hSetBuffering, stdin, stdout)
 import System.Process (CreateProcess (std_err, std_in, std_out), StdStream (NoStream), shell, waitForProcess, withCreateProcess)
 
 newtype NativeMessage a = NativeMessage a deriving (Show, Eq, ToJSON)
@@ -50,16 +48,6 @@ newtype MPVInfo = MPVInfo Text deriving (Show, Eq)
 instance ToJSON MPVInfo where
   toJSON = undefined
   toEncoding (MPVInfo info) = pairs $ "info" .= info
-
-withMpvTempFile :: String -> ((FilePath, Handle) -> IO b) -> IO b
-withMpvTempFile name io = do
-  dataDir <- (</>) <$> getHomeDirectory <*> FP.encodeUtf ".youtube-mpv-chrome-extension"
-  createDirectoryIfMissing False dataDir
-  dataDir' <- FP.decodeUtf dataDir
-  bracket
-    (openTempFile dataDir' name)
-    (hClose . snd)
-    io
 
 main :: IO ()
 main = do
