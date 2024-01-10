@@ -1,6 +1,13 @@
 {
-  inputs = { nixpkgs.url = "nixpkgs-unstable"; };
-  outputs = { self, nixpkgs }:
+  inputs = {
+    nixpkgs.url =
+      "github:NixOS/nixpkgs/6909e461de4ecafbfac42e7a7a9e53da01ebf244";
+    nix-github-actions = {
+      url = "github:nix-community/nix-github-actions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+  outputs = { self, nixpkgs, nix-github-actions }:
     let
       ghcVersion = "96";
       mkHsPackage = pkgs: pkgs.haskell.packages."ghc${ghcVersion}";
@@ -94,5 +101,10 @@
             withHoogle = true;
           };
         }) nixpkgs.legacyPackages;
+
+      githubActions = nix-github-actions.lib.mkGithubMatrix {
+        checks = builtins.mapAttrs (_: pkgs: { inherit (pkgs) youtube-mpv; })
+          self.packages;
+      };
     };
 }
