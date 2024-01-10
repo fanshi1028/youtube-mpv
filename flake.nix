@@ -108,9 +108,9 @@
             inherit (self.packages)  "x86_64-linux" "x86_64-darwin" "mingwW64";
           };
         platforms = {
-          "x86_64-linux" = "ubuntu-22.04";
-          "x86_64-darwin" = "macos-13" ;
-          "mingwW64" = "windows-2022";
+          "x86_64-linux" = [ "ubuntu-20.04" "ubuntu-22.04" ];
+          "x86_64-darwin" = [ "macos-12" "macos-13" ];
+          "mingwW64" = [ "windows-2019" "windows-2022"];
         };
       };
     };
