@@ -105,7 +105,7 @@
       githubActions = nix-github-actions.lib.mkGithubMatrix {
         checks = builtins.mapAttrs (_: pkgs: { inherit (pkgs) youtube-mpv; })
           {
-            inherit (self.packages)  "x86_64-linux" "x86_64-darwin";
+            inherit (self.packages)  "x86_64-linux" "x86_64-darwin" "mingwW64";
           };
       };
     };
