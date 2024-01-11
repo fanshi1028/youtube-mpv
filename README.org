@@ -51,11 +51,11 @@ cabal build -O2
 #+end_src
 ***** To find the path to the compiled executable, and fyi mine is at
 #+begin_src bash :exports both
-cabal list-bin youtube-mpv-native-host
+cabal list-bin -O2 youtube-mpv-native-host
 #+end_src
 
 #+RESULTS:
-: /Users/fanshi/Personal/chrome-extensions/youtube-mpv/dist-newstyle/build/x86_64-osx/ghc-9.6.3/youtube-mpv-native-host-0.1.0.0/x/youtube-mpv-native-host/build/youtube-mpv-native-host/youtube-mpv-native-host
+: /Users/fanshi/Personal/chrome-extensions/youtube-mpv/dist-newstyle/build/x86_64-osx/ghc-9.6.3/youtube-mpv-native-host-0.1.0.0/x/youtube-mpv-native-host/opt/build/youtube-mpv-native-host/youtube-mpv-native-host
 
 *** Hey, of course
 You need a browser([[https://www.google.com/chrome/][Chrome]] for example) and [[https://mpv.io/][Mpv]] + [[https://github.com/yt-dlp/yt-dlp/wiki/Installation][yt-dlp]] (and [[https://mpv.io/manual/stable/#options-ytdl-path][to setup ytdl path for mpv as needed]])
