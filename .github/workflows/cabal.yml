@@ -10,15 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          [
-            "ubuntu-20.04",
-            "ubuntu-22.04",
-            "macos-12",
-            "macOS-13",
-            "windows-2019",
-            "windows-2022",
-          ]
+        os: ["ubuntu-22.04", "macOS-13", "windows-2022"]
         ghc: ["9.4.8", "9.6.4", "9.8.1"]
         exe: ["youtube-mpv-native-host"]
     name: ${{ matrix.os }}/GHC ${{ matrix.ghc }}/${{ matrix.exe }}
