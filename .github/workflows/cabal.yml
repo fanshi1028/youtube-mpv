@@ -48,7 +48,7 @@ jobs:
           echo artifactPath=$(cabal list-bin -O2 exe:${{matrix.exe}}) >> ${{ runner.os == 'Windows' && '$env:' || '$' }}GITHUB_ENV
 
       - name: Upload build artifacts
-        if: ${{matrix.ghc == "9.8.1" && (matrix.os == "ubuntu-22.04" || matrix.os == "macOS-13" || matrix.os == "windows-2022")}}
+        if: ${{matrix.ghc == '9.8.1' && (matrix.os == 'ubuntu-22.04' || matrix.os == 'macOS-13' || matrix.os == 'windows-2022')}}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.exe }}-${{ runner.os }}-${{matrix.ghc}}
