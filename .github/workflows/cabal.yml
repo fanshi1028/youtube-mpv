@@ -48,7 +48,10 @@ jobs:
       - name: Build
         run: |
           cabal build -O2 exe:${{matrix.exe}}
-          echo "artifactPath=$(cabal list-bin exe:${{matrix.exe}})" >> $GITHUB_ENV
+
+      - name: Find Artifact Path
+        run: |
+          echo "artifactPath=$(cabal list-bin exe:${{matrix.exe}})" >> ${{ runner.os == 'Windows' && '$env:' || '$' }}GITHUB_ENV
 
       - name: Upload build artifacts
         if: ${{matrix.ghc}} == "9.8.1" && (${{matrix.os}} == "ubuntu-22.04" || ${{matrix.os}} == "macOS-13" || ${{matrix.os}} == "windows-2022")
