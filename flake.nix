@@ -107,6 +107,10 @@
           {
             inherit (self.packages)  "x86_64-linux" "x86_64-darwin";
           };
+        platforms = {
+          "x86_64-linux" = "ubuntu-22.04";
+          "x86_64-darwin" = "macos-13" ;
+        };
       };
     };
 }
