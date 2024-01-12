@@ -58,11 +58,11 @@ main = do
   bracket (socketPair AF_UNIX Datagram defaultProtocol) (\(soc1, soc2) -> close soc1 *> close soc2) $ \(soc1, soc2) -> do
     let runMpvIPC = withFdSocket soc2 $ \fd -> do
           let process = (shell $ "mpv --input-ipc-client=fd://" <> show fd <> " --idle --keep-open") {std_in = NoStream, std_out = NoStream, std_err = NoStream}
-          withCreateProcess process $ \mHIn mHOut mHErr h -> case (mHIn, mHOut, mHErr) of
-            (Just _, _, _) -> pure . Left $ MPVError "impossible: std_in handle exists for mpv"
-            (_, Just _, _) -> pure . Left $ MPVError "impossible: std_out handle exists for mpv"
-            (_, _, Just _) -> pure . Left $ MPVError "impossible: std_err handle exists for mpv"
-            (Nothing, Nothing, Nothing) ->
+          withCreateProcess process $ \cases
+            (Just _) _ _ _ -> pure . Left $ MPVError "impossible: std_in handle exists for mpv"
+            _ (Just _) _ _ -> pure . Left $ MPVError "impossible: std_out handle exists for mpv"
+            _ _ (Just _) _ -> pure . Left $ MPVError "impossible: std_err handle exists for mpv"
+            Nothing Nothing Nothing h ->
               let parseAndSendCommand l = case runGetOrFail get l of
                     Right (uncomsumed, b, NativeMessage cmd) -> do
                       hEncodeAndSend . MPVInfo $ "Comsumed " <> T.pack (show b) <> " bytes."

@@ -14,16 +14,7 @@
     in {
       packages = builtins.mapAttrs (system: pkgs: {
         youtube-mpv-native-host = ((mkHsPackage pkgs).developPackage {
-          root = with pkgs.lib.fileset;
-            toSource {
-              root = ./.;
-              fileset = unions [
-                ./youtube-mpv-native-host.cabal
-                ./native-host
-                ./LICENSE
-                ./CHANGELOG.md
-              ];
-            };
+          root = ./native-host;
           modifier = drv: pkgs.haskell.lib.appendConfigureFlag drv "-O2";
         }).overrideAttrs (_: oa: {
           # NOTE: https://stackoverflow.com/a/69395418
@@ -42,20 +33,14 @@
             nativeBuildInputs = [ typescript ];
             src = with lib.fileset;
               toSource {
-                root = ./.;
-                fileset = unions [
-                  ./extension/src
-                  ./package.json
-                  ./package-lock.json
-                  ./tsconfig.json
-                  (fileFilter (file: !(file.hasExt "js")) ./extension/dist)
-                ];
+                root = ./extension;
+                fileset = fileFilter (file: !(file.hasExt "js")) ./extension;
               };
             npmDepsHash = "sha256-Z1IhQt2Yul1AjX3V1F0VHvjCOAxvDkxfOf3iNVfdI4E=";
-            buildPhase = "tsc ";
+            buildPhase = "tsc";
             postInstall = ''
               mkdir -p $out/share/chrome/extensions
-              cp -r extension/dist/* $out/share/chrome/extensions
+              cp -r dist/* $out/share/chrome/extensions
               rm -r $out/lib
             '';
           };
@@ -103,13 +88,12 @@
         }) nixpkgs.legacyPackages;
 
       githubActions = nix-github-actions.lib.mkGithubMatrix {
-        checks = builtins.mapAttrs (_: pkgs: { inherit (pkgs) youtube-mpv; })
-          {
-            inherit (self.packages)  "x86_64-linux" "x86_64-darwin";
-          };
+        checks = builtins.mapAttrs (_: pkgs: { inherit (pkgs) youtube-mpv; }) {
+          inherit (self.packages) x86_64-linux x86_64-darwin;
+        };
         platforms = {
-          "x86_64-linux" = "ubuntu-22.04";
-          "x86_64-darwin" = "macos-13" ;
+          x86_64-linux = "ubuntu-22.04";
+          x86_64-darwin = "macos-13";
         };
       };
     };

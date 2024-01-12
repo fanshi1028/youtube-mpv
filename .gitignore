@@ -3,4 +3,5 @@
 /extension/dist/*.js
 /node_modules/
 /result
-/dist-newstyle/
+/native-host/dist-newstyle/
+/extension/node_modules/
