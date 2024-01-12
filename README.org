@@ -26,7 +26,7 @@ tsc -v
 : Version 5.2.2
 
 **** Compile the extension, run
-#+begin_src bash :dir ./extension :results scalar
+#+begin_src bash :dir ./extension :results scalar :exports both
 pwd
 pnpm i # NOTE: pnpm can be replaced with npm, yarn, etc
 tsc
@@ -64,7 +64,7 @@ cabal --version
 : compiled using version 3.10.2.1 of the Cabal library
 
 **** Compile the native host
-#+begin_src bash :dir ./native-host :results scalar
+#+begin_src bash :dir ./native-host :results scalar :exports both
 pwd
 cabal build -O2
 #+end_src
