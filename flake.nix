@@ -14,11 +14,7 @@
     in {
       packages = builtins.mapAttrs (system: pkgs: {
         youtube-mpv-native-host = ((mkHsPackage pkgs).developPackage {
-          root = with pkgs.lib.fileset;
-            toSource {
-              root = ./native-host;
-              fileset = ./native-host;
-            };
+          root = ./native-host;
           modifier = drv: pkgs.haskell.lib.appendConfigureFlag drv "-O2";
         }).overrideAttrs (_: oa: {
           # NOTE: https://stackoverflow.com/a/69395418
