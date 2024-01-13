@@ -57,7 +57,7 @@ main = do
   hSetBinaryMode stdout True
   bracket (socketPair AF_UNIX Datagram defaultProtocol) (\(soc1, soc2) -> close soc1 *> close soc2) $ \(soc1, soc2) -> do
     let runMpvIPC = withFdSocket soc2 $ \fd -> do
-          let process = (shell $ "mpv --input-ipc-client=fd://" <> show fd <> " --idle --keep-open") {std_in = NoStream, std_out = NoStream, std_err = NoStream}
+          let process = (shell $ "mpv --input-ipc-client=fd://" <> show fd <> " --idle --keep-open --profile=youtube-mpv") {std_in = NoStream, std_out = NoStream, std_err = NoStream}
           withCreateProcess process $ \cases
             (Just _) _ _ _ -> pure . Left $ MPVError "impossible: std_in handle exists for mpv"
             _ (Just _) _ _ -> pure . Left $ MPVError "impossible: std_out handle exists for mpv"

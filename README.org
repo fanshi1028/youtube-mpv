@@ -111,7 +111,8 @@ You need a browser([[https://www.google.com/chrome/][Chrome]] for example) and [
 *** To load the extension
 - [[https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked][Load it unpacked]]
 - Or :: [[https://developer.chrome.com/docs/extensions/how-to/distribute/host-extensions#create][Pack it]].
-
+*** To Configure mpv behaviour
+You can setup a [youtube-mpv] profile, see https://mpv.io/manual/master/#profiles
 * Usage
 Turn on the extension and goto [[https://youtube.com][youtube]], click on any video and see it youself (via =mpv= of course).
 * Contributing
