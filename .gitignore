@@ -1,7 +1,6 @@
 /.envrc
-/.direnv/
+**/.direnv/
 /extension/dist/*.js
-/node_modules/
 /result
-/native-host/dist-newstyle/
-/extension/node_modules/
+**/dist-newstyle/
+**/node_modules/
