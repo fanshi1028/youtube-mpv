@@ -18,7 +18,7 @@ import Network.Socket (Family (AF_UNIX), SocketType (Datagram), close, defaultPr
 import Network.Socket.ByteString.Lazy as SOC (getContents, sendAll)
 import System.Exit (ExitCode (ExitSuccess))
 import System.IO (BufferMode (BlockBuffering), hFlush, hSetBinaryMode, hSetBuffering, stdin, stdout)
-import System.Process (CreateProcess (std_err, std_in, std_out), StdStream (NoStream), shell, waitForProcess, withCreateProcess)
+import System.Process.Typed (nullStream, setStderr, setStdin, setStdout, shell, waitExitCode, withProcessWait)
 
 newtype NativeMessage a = NativeMessage a deriving (Show, Eq, ToJSON)
 
@@ -57,22 +57,20 @@ main = do
   hSetBinaryMode stdout True
   bracket (socketPair AF_UNIX Datagram defaultProtocol) (\(soc1, soc2) -> close soc1 *> close soc2) $ \(soc1, soc2) -> do
     let runMpvIPC = withFdSocket soc2 $ \fd -> do
-          let process = (shell $ "mpv --input-ipc-client=fd://" <> show fd <> " --idle --keep-open --profile=youtube-mpv") {std_in = NoStream, std_out = NoStream, std_err = NoStream}
-          withCreateProcess process $ \cases
-            (Just _) _ _ _ -> pure . Left $ MPVError "impossible: std_in handle exists for mpv"
-            _ (Just _) _ _ -> pure . Left $ MPVError "impossible: std_out handle exists for mpv"
-            _ _ (Just _) _ -> pure . Left $ MPVError "impossible: std_err handle exists for mpv"
-            Nothing Nothing Nothing h ->
-              let parseAndSendCommand l = case runGetOrFail get l of
-                    Right (uncomsumed, b, NativeMessage cmd) -> do
-                      hEncodeAndSend . MPVInfo $ "Comsumed " <> T.pack (show b) <> " bytes."
-                      hEncodeAndSend cmd
-                      sendAll soc1 cmd
-                      sendAll soc1 "\n"
-                      parseAndSendCommand uncomsumed
-                    Left _ -> pure ()
-                  commandLoop = BL.getContents >>= parseAndSendCommand
-               in (MPVError "commadLoop ended before mpv" <$ commandLoop) `race` waitForProcess h
+          let process =
+                setStdin nullStream . setStdout nullStream . setStderr nullStream $
+                  shell ("mpv --input-ipc-client=fd://" <> show fd <> " --idle --keep-open --profile=youtube-mpv")
+          withProcessWait process $ \p ->
+            let parseAndSendCommand l = case runGetOrFail get l of
+                  Right (uncomsumed, b, NativeMessage cmd) -> do
+                    hEncodeAndSend . MPVInfo $ "Comsumed " <> T.pack (show b) <> " bytes."
+                    hEncodeAndSend cmd
+                    sendAll soc1 cmd
+                    sendAll soc1 "\n"
+                    parseAndSendCommand uncomsumed
+                  Left _ -> pure ()
+                commandLoop = BL.getContents >>= parseAndSendCommand
+             in (MPVError "commadLoop ended before mpv" <$ commandLoop) `race` waitExitCode p
         mpvOutputPrintloop = SOC.getContents soc1 >>= traverse_ ((*> hFlush stdout) . hEncodeAndSend) . BL.lines
     try ((MPVError "mpvOutputPrintloop ended before mpv" <$ mpvOutputPrintloop) `race` runMpvIPC) >>= \case
       Left (err :: SomeException) -> hEncodeAndSend . MPVError . T.pack $ show err

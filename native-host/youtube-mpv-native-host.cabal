@@ -28,7 +28,8 @@ executable youtube-mpv-native-host
                       process,
                       aeson,
                       network,
-                      async
+                      async,
+                      typed-process
     hs-source-dirs:   app
     default-language: GHC2021
     ghc-options: -threaded
