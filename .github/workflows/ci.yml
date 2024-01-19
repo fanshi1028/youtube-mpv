@@ -5,11 +5,11 @@ on:
 
 jobs:
   nix-build:
-    uses: ./.github/workflows/nix.yml
+    uses: fanshi1028/nix-flake-templates/.github/workflows/nix.yml
     secrets:
       CACHIX_AUTH_TOKEN: ${{secrets.CACHIX_AUTH_TOKEN}}
   cabal-build:
-    uses: ./.github/workflows/cabal.yml
+    uses: fanshi1028/nix-flake-templates/.github/workflows/cabal.yml
     with:
       exe: youtube-mpv-native-host
       working-directory: ./native-host
