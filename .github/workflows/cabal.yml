@@ -1,9 +1,12 @@
 name: Cabal CI
 
 on:
-  pull_request:
-    branches:
-      - master
+  workflow_call:
+    inputs:
+      working-directory:
+        required: false
+        default: .
+        type: string
 
 jobs:
   cabal-build:
@@ -28,7 +31,7 @@ jobs:
           cabal-version: "3.10.2.0"
 
       - name: Freeze
-        working-directory: ./native-host
+        working-directory: ${{ inputs.working-directory }}
         run: |
           cabal freeze
 
@@ -41,12 +44,12 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.ghc }}-${{ hashFiles('native/cabal.project.freeze') }}
 
       - name: Build
-        working-directory: ./native-host
+        working-directory: ${{ inputs.working-directory }}
         run: |
           cabal build -O2 exe:${{matrix.exe}}
 
       - name: Find Artifact Path
-        working-directory: ./native-host
+        working-directory: ${{ inputs.working-directory }}
         run: |
           echo artifactPath=$(cabal list-bin -O2 exe:${{matrix.exe}}) >> ${{ runner.os == 'Windows' && '$env:' || '$' }}GITHUB_ENV
 
