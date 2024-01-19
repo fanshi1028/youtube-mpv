@@ -5,10 +5,10 @@ on:
 
 jobs:
   nix-build:
-    uses: ./.github/workflows/nix
+    uses: ./.github/workflows/nix.yml
     secrets:
       CACHIX_AUTH_TOKEN: ${{secrets.CACHIX_AUTH_TOKEN}}
   cabal-build:
-    uses: ./.github/workflows/cabal
+    uses: ./.github/workflows/cabal.yml
     with:
       working-directory: ./native-host
