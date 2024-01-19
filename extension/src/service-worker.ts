@@ -28,3 +28,9 @@ chrome.runtime.onMessage.addListener((msg, _sender, send) => {
     send("Message has no v");
   }
 });
+
+const mpvGetProp = (prop: string) =>
+  mpvPort.postMessage({ command: ["get_property", prop] });
+
+const mpvSetProp = (prop: string, value: string) =>
+  mpvPort.postMessage({ command: ["set_property", prop, value] });
