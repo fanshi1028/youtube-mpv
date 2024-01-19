@@ -11,4 +11,5 @@ jobs:
   cabal-build:
     uses: ./.github/workflows/cabal.yml
     with:
+      exe: youtube-mpv-native-host
       working-directory: ./native-host
