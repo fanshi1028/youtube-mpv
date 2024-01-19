@@ -1,9 +1,15 @@
 name: Nix CI
 
 on:
-  pull_request:
-    branches:
-      - master
+  workflow_call:
+    inputs:
+      working-directory:
+        required: false
+        default: .
+        type: string
+    secrets:
+      CACHIX_AUTH_TOKEN:
+        required: true
 
 jobs:
   nix-matrix:
@@ -33,5 +39,7 @@ jobs:
         with:
           name: fanshi1028-personal
           extraPullNames: nix-community
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-      - run: nix build -L ".#${{ matrix.attr }}"
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - run: |
+          nix build -L ".#${{ matrix.attr }}"
+        working-directory: ${{ inputs.working-directory }}
