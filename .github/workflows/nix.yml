@@ -10,7 +10,6 @@ on:
     secrets:
       CACHIX_AUTH_TOKEN:
         required: true
-        type: string
 
 jobs:
   nix-matrix:
