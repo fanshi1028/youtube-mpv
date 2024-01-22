@@ -16,7 +16,15 @@ mpvPort.onMessage.addListener((r) => {
       }`,
     );
   } else {
-    console.log(`mpv: ${JSON.stringify(r)}`);
+    let cms;
+    try {
+      cms = JSON.parse(r);
+    } catch (e) {}
+    if (cms && cms instanceof Array) {
+      cms.forEach((cm: YoutubeComment) =>
+        console.log(`comment: ${cm.text}\n${cm.like_count}`),
+      );
+    } else console.log(`mpv: ${JSON.stringify(r)}`);
   }
 });
 
